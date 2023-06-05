@@ -1,0 +1,33 @@
+########## Information for Data Prep & Processing ##########
+my_own_stopwords: []
+
+processing_info:
+  sentiment140:
+    path_raw: !paths sentiment140_path_raw
+    path_proc: !paths sentiment140_path_proc 
+    text_col: "text"
+  covid:
+    fpath_raw: !paths covid_fpath_raw 
+    fpath_proc: !paths covid_fpath_proc 
+    file_prefix: "covid"
+    text_col: "text"
+  congress:
+    fpath_raw: !paths congress_fpath_raw
+    fpath_proc: !paths congress_fpath_proc
+    file_prefix: "congress"
+    text_col: "text"
+  twitter:
+    fpath_raw: !paths twitter_fpath_raw
+    fpath_proc: !paths twitter_fpath_proc 
+    file_prefix: "twitter"
+    text_col: "text"
+  bitcoin:
+    fpath_raw: !paths bitcoin_fpath_raw
+    fpath_proc: !paths bitcoin_fpath_proc
+    file_prefix: "bitcoin"
+    text_col: "text"
+  artificial_intelligence:
+    fpath_raw: !paths artificial_intelligence_fpath_raw
+    fpath_proc: !paths artificial_intelligence_fpath_proc
+    file_prefix: "artificial_intelligence"
+    text_col: "text"

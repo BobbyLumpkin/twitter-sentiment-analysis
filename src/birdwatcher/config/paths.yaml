@@ -1,0 +1,99 @@
+########## File Paths ##########
+s3_bucket: &s3_bucket "s3://twitter-sentiment-analysis-dev"
+cache_path: &cache_path
+  !osjoin
+    - *s3_bucket
+    - "cache"
+dev_models: &dev_models
+  !osjoin
+    - *s3_bucket
+    - "models/dev"
+
+# Cache Paths
+raw_data: &raw_data
+  !osjoin
+    - *cache_path
+    - "raw_data"
+proc_data: &proc_data
+  !osjoin
+  - *cache_path
+  - "processed_data"
+tfidf_data: &tfidf_data
+  !osjoin 
+    - *cache_path
+    - "tfidf_data"
+
+# Raw Data Paths
+sentiment140_path_raw: &sentiment140_path_raw 
+  !osjoin
+    - *raw_data
+    - "sentiment140/Sentiment140.parquet"
+covid_fpath_raw: &covid_fpath_raw
+  !osjoin
+    - *raw_data
+    - "covid"
+congress_fpath_raw: &congress_fpath_raw
+  !osjoin
+  - *raw_data
+  - "congress"
+bitcoin_fpath_raw: &bitcoin_fpath_raw
+  !osjoin
+    - *raw_data
+    - "bitcoin"
+artificial_intelligence_fpath_raw: &artificial_intelligence_fpath_raw
+  !osjoin
+    - *raw_data
+    - "artificial_intelligence"
+twitter_fpath_raw: &twitter_fpath_raw
+  !osjoin
+    - *raw_data
+    - "twitter"
+
+# Processed Data Paths
+sentiment140_path_proc: &sentiment140_path_proc
+  !osjoin
+    - *proc_data
+    - "sentiment140/Sentiment140_processed.parquet"
+covid_fpath_proc: &covid_fpath_proc
+  !osjoin
+    - *proc_data
+    - "covid"
+congress_fpath_proc: &congress_fpath_proc
+  !osjoin
+    - *proc_data
+    - "congress"
+bitcoin_fpath_proc: &bitcoin_fpath_proc
+  !osjoin
+    - *proc_data
+    - "bitcoin"
+artificial_intelligence_fpath_proc: &artificial_intelligence_fpath_proc
+  !osjoin
+    - *proc_data
+    - "artificial_intelligence"
+twitter_fpath_proc: &twitter_fpath_proc !osjoin [*proc_data, "twitter"]
+
+# Tfidf Paths
+sentiment140_path_tfidf: &sentiment140_path_tfidf
+  !osjoin 
+    - *tfidf_data
+    - "sentiment140/Sentiment140_tfidf.parquet"
+covid_fpath_tfidf: &covid_fpath_tfidf
+  !osjoin
+    - *tfidf_data
+    - "covid"
+congress_fpath_tfidf: &congress_fpath_tfidf
+  !osjoin
+    - *tfidf_data
+    - "congress"
+bitcoin_fpath_tfidf: &bitcoin_fpath_tfidf
+  !osjoin
+    - *tfidf_data
+    - "bitcoin"
+artificial_intelligence_fpath_tfidf: &artificial_intelligence_fpath_tfidf
+  !osjoin
+    - *tfidf_data
+    - "artificial_intelligence"
+twitter_fpath_tfidf: &twitter_fpath_tfidf
+  !osjoin
+    - *tfidf_data
+    - "twitter"

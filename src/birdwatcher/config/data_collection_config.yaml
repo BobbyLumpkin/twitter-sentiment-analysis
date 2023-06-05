@@ -1,0 +1,45 @@
+########## Params ##########
+start_date: "2023-05-29T09:00:00Z"
+end_date: "2023-06-03T09:00:00Z"
+
+########## Kwargs ##########
+max_results: 100
+limit: 10000
+
+########## Queries ##########
+query_info: 
+  covid:
+    query_list:
+      - "covid"
+      - "#covid"
+    fpath_raw: !paths
+      covid_fpath_raw
+    file_prefix: "covid"
+  congress:
+    query_list:
+      - "congress"
+      - "#congress" 
+    fpath_raw: !paths
+      congress_fpath_raw
+    file_prefix: "congress" 
+  twitter:
+    query_list:
+      - "twitter"
+      - "#twitter" 
+    fpath_raw: !paths
+      twitter_fpath_raw
+    file_prefix: "twitter"
+  bitcoin:
+    query_list:
+      - "bitcoin"
+      - "#bitcoin" 
+    fpath_raw: !paths
+      bitcoin_fpath_raw
+    file_prefix: "bitcoin" 
+  artificial_intelligence:
+    query_list:
+      - "artificial intelligence"
+      - "#artificialintelligence" 
+    fpath_raw: !paths
+      artificial_intelligence_fpath_raw 
+    file_prefix: "artificial_intelligence"
