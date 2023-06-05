@@ -112,15 +112,14 @@ def train_save_inference_pipeline(
     _logger.info(
         "Defining pre-training pipeline."
     )
-    # Get dataprep and feature generation pipelines
+    # Combine dataprep, feature generation and trainteset into a
+    # pre-training pipeline.
     dataprep_pipeline = get_dataprep_pipeline(
         dataprep_kwargs=dataprep_kwargs
     )
     feature_generation_pipeline = get_feature_generation_pipeline(
         tfidf_kwargs=tfidf_kwargs
     )
-    
-    # Get train/test split, pca and model
     traintest = FunctionTransformer(
         _get_training_data,
         validate=False
@@ -132,6 +131,7 @@ def train_save_inference_pipeline(
         verbose=verbose
     )
 
+    # Load raw sentiment140 and fit pre-training pipeline.
     _logger.info(
         "Loading raw sentiment140 dataset."
     )
@@ -146,12 +146,17 @@ def train_save_inference_pipeline(
 
     pca = PCAPlotIt(**pca_kwargs)
     model = LogisticRegression(**model_params)
-
+    
+    # Fit model pipeline.
+    _logger.info(
+        "Fitting model pipeline."
+    )
     model_pipeline = Pipeline(
         steps=[("pca", pca), ("classifier", model)], verbose=verbose
     )
     model_pipeline.fit(X=x_train, y=y_train)
-
+    
+    # Define trained inference pipeline.
     trained_inference_pipeline = Pipeline(
         steps=[("dataprep", dataprep_pipeline),
                ("feature_generation", feature_generation_pipeline),
