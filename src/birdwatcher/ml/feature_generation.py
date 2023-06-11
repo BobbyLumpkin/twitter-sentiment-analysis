@@ -126,10 +126,10 @@ def generate_tfidf_df(
     
     # Append target column if data_key is sentiment140.
     if data_key == "sentiment140":
-        df_tfidf["target"] = (df_proc["target"] / 4).astype(int)
+        df_tfidf["sentiment140_target"] = (df_proc["target"] / 4).astype(int)
         cols = list(df_tfidf.columns)
-        cols.remove("target")
-        cols.insert(0, "target")
+        cols.remove("sentiment140_target")
+        cols.insert(0, "sentiment140_target")
         df_tfidf = df_tfidf[cols]
     
     # Save results, if appropriate.

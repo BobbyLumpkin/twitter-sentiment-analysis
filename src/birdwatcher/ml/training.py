@@ -67,7 +67,7 @@ def _get_train_test_data(
     if df_sentiment140_tfidf is None:
         tfidf_path = _get_tfidf_save_path(data_key="sentiment140")
         df_sentiment140_tfidf = pd.read_parquet(tfidf_path)
-    y_cols = "target"
+    y_cols = "sentiment140_target"
     x_cols = list(df_sentiment140_tfidf.columns)
     x_cols.remove(y_cols)
     x_tfidf = df_sentiment140_tfidf[x_cols]
@@ -75,8 +75,8 @@ def _get_train_test_data(
     x_train, x_test, y_train, y_test = train_test_split(
         x_tfidf, 
         y_tfidf, 
-        test_size=TRAINING_CONFIG.train_test_info["test_size"],
-        random_state=TRAINING_CONFIG.train_test_info["random_state"]
+        test_size=TRAINING_CONFIG.test_size,
+        random_state=TRAINING_CONFIG.random_state
     )
     return TrainTestSplit(
         x_train=x_train,
@@ -103,6 +103,7 @@ def train_save_inference_pipeline(
     tfidf_kwargs: dict = TRAINING_TFIDF_KWARGS,
     pca_kwargs: dict = TRAINING_CONFIG.pca_kwargs,
     model_params: dict = TRAINING_CONFIG.model_params,
+    random_state: int = TRAINING_CONFIG.random_state,
     save: bool = True,
     verbose: bool = True
 ):
@@ -157,20 +158,31 @@ def train_save_inference_pipeline(
     model_pipeline.fit(X=x_train, y=y_train)
     
     # Define trained inference pipeline.
-    trained_inference_pipeline = Pipeline(
+    trained_training_pipeline = Pipeline(
         steps=[("dataprep", dataprep_pipeline),
                ("feature_generation", feature_generation_pipeline),
-               ("pca", model_pipeline.named_steps["pca"]),
-               ("classifier", model_pipeline.named_steps["classifier"])],
+               ("traintest", traintest),
+               ("pca", model_pipeline["pca"]),
+               ("classifier", model_pipeline["classifier"])],
         verbose=verbose
     )
 
     # Save the results, if applicable
     if save:
         _logger.info(
-            "Saving fitted inference pipeline to "
-            f"{PATHS.inference_pipeline_path}."
+            "Saving training pipeline to "
+            f"{PATHS.training_pipeline_path}."
         )
-        with open(PATHS.inference_pipeline_path, "wb") as outfile:
-            pickle.dump(trained_inference_pipeline, outfile)
-    return trained_inference_pipeline
+        with open(PATHS.training_pipeline_path, "wb") as outfile:
+            pickle.dump(trained_training_pipeline, outfile)
+        _logger.info(
+            f"Saving trained pca to {PATHS.pca_path}."
+        )
+        with open(PATHS.pca_path, "wb") as outfile:
+            pickle.dump(trained_training_pipeline["pca"], outfile)
+        _logger.info(
+            f"Saving trained model to {PATHS.model_path}."
+        )
+        with open(PATHS.model_path, "wb") as outfile:
+            pickle.dump(trained_training_pipeline["classifier"], outfile)
+    return trained_training_pipeline

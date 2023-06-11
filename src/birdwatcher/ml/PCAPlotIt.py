@@ -108,3 +108,30 @@ class PCAPlotIt(PCA):
             columns=pc_list
         )
         return df_retained_pcs
+    
+    def fit_transform(self, X, y=None):
+        pcs = super().fit_transform(X)
+        self.fit_status = True
+        self.train_shape_0 = X.shape[0]
+        self.train_shape_1 = X.shape[1]
+        self.pc_id = np.arange(min(self.train_shape_0, self.train_shape_1)) + 1
+        self.cum_var = np.cumsum(self.explained_variance_ratio_)
+        self.num_pcs_retained = np.where(
+            self.cum_var > self.cumulative_variance_target
+        )[0][0] + 1
+
+        _logger.info(
+            f"Target cumulative variance: {self.cumulative_variance_target}"
+        )
+        _logger.info(
+            f"Number of principal components: {self.num_pcs_retained}"
+        )
+        pc_list = [
+            f"PC-{comp}"
+            for comp in np.arange(1, self.num_pcs_retained + 1)
+        ]
+        df_retained_pcs = pd.DataFrame(
+            pcs[:, 0 : self.num_pcs_retained],
+            columns=pc_list
+        )
+        return df_retained_pcs

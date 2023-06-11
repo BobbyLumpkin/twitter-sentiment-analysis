@@ -48,9 +48,11 @@ class Config:
             self.base_path / "config/collection_run_info.pkl"
         )
         self.tfidf_vectorizer_path = self.base_path / "ml/tfidf_vectorizer.pkl"
-        self.inference_pipeline_path = (
-            self.base_path / "ml/trained_inference_pipeline.pkl"
+        self.training_pipeline_path = (
+            self.base_path / "ml/training_pipeline.pkl"
         )
+        self.pca_path = self.base_path / "ml/trained_pca.pkl"
+        self.model_path = self.base_path / "ml/trained_model.pkl"
 
         if bucket:
             self.bucket = Path(bucket)

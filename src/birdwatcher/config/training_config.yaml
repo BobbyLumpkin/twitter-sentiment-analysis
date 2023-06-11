@@ -1,13 +1,14 @@
 ########## Information for Model Training ##########
-train_test_info:
-  test_size: 0.2
-  random_state: 123
+test_size: &test_size 0.2
+random_state: &random_state 123
 
 pca_kwargs:
   cumulative_variance_target: 0.8
+  random_state: *random_state
 
 model_params:
   l1_ratio: 0.05
   penalty: elasticnet
   solver: saga
   n_jobs: -1
+  random_state: *random_state

@@ -76,7 +76,7 @@ def _remove_and_tokenize(text: str) -> list:
 def _generate_raw_proc_path(
     config_dict: dict,
     df_type: str,
-    end_date_name: str
+    end_date_name: str = run_info.end_date_name
 ):
     file_prefix = config_dict["file_prefix"]
     file_name = f"{file_prefix}_{end_date_name}_{df_type}.parquet"
