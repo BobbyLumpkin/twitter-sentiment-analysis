@@ -154,5 +154,31 @@ def get_trained_inference_pipeline(
         steps=steps,
         verbose=verbose
     )
-        
     return inference_pipeline
+
+
+def perform_pipeline_inference(
+    data_key: str,
+    end_date_name: str = run_info.end_date_name,
+    save: bool = True,
+    verbose: bool = True
+):
+    """
+    Retreive pipeline and perform inference.
+    """
+    # Retreive trained inference pipeline.
+    inference_pipeline = get_trained_inference_pipeline(
+        data_key=data_key,
+        end_date_name=end_date_name,
+        save=save,
+        verbose=verbose
+    )
+    
+    # Retreive raw data and perform inference.
+    raw_path = _generate_raw_proc_path(
+        config_dict=DATA_PREP_CONFIG.processing_info[data_key],
+        df_type="raw"
+    )
+    df_raw = pd.read_parquet(raw_path)
+    preds = inference_pipeline.predict(df_raw)
+    return preds

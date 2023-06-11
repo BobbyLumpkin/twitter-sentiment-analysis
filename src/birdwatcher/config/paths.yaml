@@ -22,6 +22,10 @@ tfidf_data: &tfidf_data
   !osjoin 
     - *cache_path
     - "tfidf_data"
+score_paths: &score_paths
+  !osjoin
+    - *cache_path
+    - "scores"
 
 # Raw Data Paths
 sentiment140_path_raw: &sentiment140_path_raw 
@@ -97,3 +101,5 @@ twitter_fpath_tfidf: &twitter_fpath_tfidf
   !osjoin
     - *tfidf_data
     - "twitter"
+
+# Score Paths
