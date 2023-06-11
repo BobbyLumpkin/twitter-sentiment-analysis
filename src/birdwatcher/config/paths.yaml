@@ -26,6 +26,10 @@ scores_path: &scores_path
   !osjoin
     - *cache_path
     - "scores"
+post_processing_path: &post_processing_path
+  !osjoin
+    - *cache_path
+    - "post_processing"
 
 # Raw Data Paths
 sentiment140_path_raw: &sentiment140_path_raw 

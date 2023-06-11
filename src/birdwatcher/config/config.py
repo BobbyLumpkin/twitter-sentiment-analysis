@@ -88,4 +88,5 @@ SECRETS = Config(
 DATA_COLLECTION_CONFIG = Config("config/data_collection_config.yaml")
 DATA_PREP_CONFIG = Config("config/dataprep_config.yaml")
 FEATURE_GENERATION_CONFIG = Config("config/feature_generation_config.yaml")
+SUMMARIZE_CONFIG = Config("config/summarize_config.yaml")
 TRAINING_CONFIG = Config("config/training_config.yaml")

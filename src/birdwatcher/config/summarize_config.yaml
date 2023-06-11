@@ -1,0 +1,26 @@
+data_key_list:
+  - artificial_intelligence
+  - covid
+  - congress
+  - bitcoin
+  - twitter
+
+pie_chart_params:
+  autopct: "%1.1f%%"
+  colors:
+    - green
+    - red
+  explode:
+    - 0.05
+    - 0.05
+  labels:
+    - Positive
+    - Negative
+  legend_fontsize: small
+  legend_title: Sentiments
+  loc: upper right
+  shadow: True
+  title: "{data_key} Sentiment Distribution"
+  wedge_properties:
+    linewidth: 1
+    edgecolor: black
