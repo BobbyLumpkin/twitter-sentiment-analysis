@@ -3,15 +3,11 @@ channels:
   - conda-forge
   - defaults
 dependencies:
-  - cookiecutter=1.7.2
-  - hydra-core=1.0.6
-  - mlflow=1.14.1
   - nltk=3.7
   - pandas=1.2.4
   - pip=22.2.2
   - pip:
-      - attrs==22.2.0
-      - boto3==1.26.9
+      - boto3==1.26.74
       - fsspec==2023.1.0
       - ipykernel==6.16.0
       - langdetect==1.0.9
@@ -20,7 +16,7 @@ dependencies:
       - pyarrow==11.0.0
       - pydantic==1.10.5
       - pytest==7.2.1
-      - s3fs==2023.4.0
-      - scikit-learn==1.2.2
+      - s3fs==0.4.2
+      - scikit-learn==1.2.1
       - tweepy==4.4.0
       - wandb==0.13.3

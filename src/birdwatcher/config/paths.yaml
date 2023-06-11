@@ -22,7 +22,7 @@ tfidf_data: &tfidf_data
   !osjoin 
     - *cache_path
     - "tfidf_data"
-score_paths: &score_paths
+scores_path: &scores_path
   !osjoin
     - *cache_path
     - "scores"

@@ -88,6 +88,17 @@ def _remove_cols(
     return df.drop(labels=labels, axis=1)
 
 
+def _get_scores_save_path(
+    data_key: str,
+    end_date_name: str = run_info.end_date_name
+):
+    """
+    Get save path for scores.
+    """
+    fname = "scores_" + data_key + f"_{end_date_name}.parquet"
+    return PATHS.scores_path + f"/{data_key}/{fname}"
+
+
 def get_trained_inference_pipeline(
     data_key: str,
     end_date_name: str = run_info.end_date_name,
@@ -180,5 +191,17 @@ def perform_pipeline_inference(
         df_type="raw"
     )
     df_raw = pd.read_parquet(raw_path)
-    preds = inference_pipeline.predict(df_raw)
-    return preds
+    df_preds = pd.DataFrame({
+        "preds": inference_pipeline.predict(df_raw)
+    })
+    if save:
+        save_path = _get_scores_save_path(
+            data_key=data_key,
+            end_date_name=end_date_name
+        )
+        _logger.info(
+            f"Saving scores for data_key={data_key} and date="
+            f"{end_date_name} to {save_path}."
+        )
+        df_preds.to_parquet(save_path)
+    return df_preds
