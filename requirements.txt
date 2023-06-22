@@ -1,3 +1,4 @@
+awswrangler==3.2.1
 boto3==1.26.74
 fsspec==2023.1.0
 langdetect==1.0.9

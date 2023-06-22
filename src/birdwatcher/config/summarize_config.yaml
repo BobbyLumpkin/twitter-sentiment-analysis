@@ -24,3 +24,13 @@ pie_chart_params:
   wedge_properties:
     linewidth: 1
     edgecolor: black
+
+line_graph_params:
+  max_records:
+  marker: o
+  ylim:
+    - 0
+    - 1
+  xlabel: Date
+  ylabel: Positive Sentiment Proportion
+  title: "{data_key} Historical Positive Sentiment"
