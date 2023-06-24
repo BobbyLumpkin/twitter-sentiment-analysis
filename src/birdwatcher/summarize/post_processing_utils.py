@@ -86,11 +86,6 @@ def _generate_sentiment_pie_chart(
         loc=params["loc"]
     )
     plt.setp(autotexts, weight="bold")
-    ax.set_title(
-        params["title"].format(
-            data_key=data_key.replace("_", " ").title()
-        )
-    )
     return SentimentPieChart(
         fig=fig,
         ax=ax,
