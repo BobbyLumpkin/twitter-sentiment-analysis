@@ -4,7 +4,7 @@ Call twitter API and convert results into pandas dataframes.
 
 
 from dataclasses import dataclass, field
-from datetime import datetime
+from datetime import datetime, timedelta
 import logging
 import pandas as pd
 from pathlib import Path
@@ -22,6 +22,7 @@ from birdwatcher.datacollection.type_utils import (
     _TweepyClientProtocol,
     _TweepyResponseProtocol
 )
+from birdwatcher.date_helpers import string_to_date
 
 
 _logger = logging.getLogger(__name__)
@@ -41,8 +42,8 @@ class CollectionRunInfo():
     Store of data collection run information.
     """
 
-    start_date: Optional[str]
-    end_date: str
+    start_date: Union[datetime, str]
+    end_date: Union[datetime, str]
     save_path: Union[str, Path] = field(default=PATHS.dc_run_date_info)
 
     def __post_init__(self):
@@ -53,7 +54,7 @@ class CollectionRunInfo():
         """
         Generate end_date_name from end_date.
         """
-        end_date_dt = datetime.strptime(
+        end_date_dt = string_to_date(
             self.end_date, "%Y-%m-%dT%H:%M:%SZ"
         )
         setattr(self, "end_date_name", end_date_dt.strftime("%Y%m%d"))
@@ -179,8 +180,13 @@ def request_save_queries(
         )
     # Convert start/end dates to datetimes & instantiate
     # CollectionRunInfo object.
-    start_date_dt = datetime.strptime(start_date, "%Y-%m-%dT%H:%M:%SZ")
-    end_date_dt = datetime.strptime(end_date, "%Y-%m-%dT%H:%M:%SZ")
+    if end_date is None:
+        end_date = datetime.now() - timedelta(seconds=30)
+    if start_date is None:
+        start_date = end_date - timedelta(days=6, hours=23, minutes=59)
+    
+    start_date_dt = string_to_date(start_date, "%Y-%m-%dT%H:%M:%SZ")
+    end_date_dt = string_to_date(end_date, "%Y-%m-%dT%H:%M:%SZ")
     run_info = CollectionRunInfo(
         start_date=start_date,
         end_date=end_date

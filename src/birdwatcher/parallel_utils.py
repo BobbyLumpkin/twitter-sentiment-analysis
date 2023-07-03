@@ -3,7 +3,23 @@ Utilities for parallelization.
 """
 
 
+from dataclasses import dataclass, field
 import pandas as pd
+import warnings
+
+
+@dataclass
+class IntervalsExceedsDataFrame(Warning):
+    
+    """
+    Warning for when number of intervals exceeds the length of the df.
+    """
+
+    message: str = field(default=(
+        "The number of intervals exceeds the length of the "
+        "DataFrame. Reverting to the DataFrame length for the "
+        "number of intervals."
+    ))
 
 
 def partition_indices(
@@ -15,10 +31,12 @@ def partition_indices(
     """
     num_rows = len(df.index)
     if num_intervals > num_rows:
-        raise ValueError(
+        warnings.warn(
             f"'num_intervals' = {num_intervals}, "
-            f"which is larger than the size of 'df' = {num_rows}."
+            f"which is larger than the size of 'df' = {num_rows}.",
+            IntervalsExceedsDataFrame
         )
+        num_intervals = num_rows
     if (num_rows % num_intervals) == 0:
         interval = int(num_rows / num_intervals)
     else:

@@ -26,6 +26,9 @@ distribution visualizations. You'll find two plots:
 (within the last week) tweets only.
 2. A line graph, visualizing changes in this distribution over time.
 
+Additionally, the underlying model can be accessed and used to generate
+sentiment classification scores on the "Model Inference Access" page!
+
 ## Links
 
 The source code for both the sentiment analysis pipeline and app
