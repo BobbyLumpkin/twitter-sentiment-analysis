@@ -9,6 +9,7 @@ WORKDIR /app
 # Copy project and install dependencies from requirements.txt.
 COPY . .
 RUN pip install -r requirements.txt
+RUN pip install .
 
 # Run the application on port 8501.
 CMD streamlit run app/Home.py --server.port 8501
