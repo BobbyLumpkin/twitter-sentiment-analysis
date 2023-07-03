@@ -2,6 +2,7 @@ awswrangler==3.2.1
 boto3==1.26.74
 fsspec==2023.1.0
 langdetect==1.0.9
+lightgbm==3.3.5
 matplotlib==3.7.1
 nltk==3.7
 pandas==1.2.4
