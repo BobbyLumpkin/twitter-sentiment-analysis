@@ -17,7 +17,7 @@ from birdwatcher.dataprep.prep import (
     get_dataprep_pipeline
 )
 from birdwatcher.ml.feature_generation import get_feature_generation_pipeline
-
+from birdwatcher.s3_utils import s3_load_pickle
 
 
 _logger = logging.getLogger(__name__)
@@ -132,13 +132,17 @@ def get_trained_inference_pipeline(
     _logger.info(
         f"Loading trained pca from {PATHS.pca_path}."
     )
-    with open(PATHS.pca_path, "rb") as infile:
-        pca = pickle.load(infile)
+    pca = s3_load_pickle(
+        key=PATHS.s3_ml_path, 
+        file_name=PATHS.pca_path
+    )
     _logger.info(
         f"Loading trained model from {PATHS.model_path}."
     )
-    with open(PATHS.model_path, "rb") as infile:
-        model = pickle.load(infile)
+    model = s3_load_pickle(
+        key=PATHS.s3_ml_path, 
+        file_name=PATHS.model_path
+    )
     
     # Combined components into inference pipeline.
     _logger.info(

@@ -21,6 +21,7 @@ from birdwatcher.ml.feature_generation import (
     get_feature_generation_pipeline
 )
 from birdwatcher.ml.PCAPlotIt import PCAPlotIt
+from birdwatcher.s3_utils import s3_save_pickle
 
 
 _logger = logging.getLogger(__name__)
@@ -173,16 +174,25 @@ def train_save_inference_pipeline(
             "Saving training pipeline to "
             f"{PATHS.training_pipeline_path}."
         )
-        with open(PATHS.training_pipeline_path, "wb") as outfile:
-            pickle.dump(trained_training_pipeline, outfile)
+        s3_save_pickle(
+            trained_training_pipeline,
+            key=PATHS.s3_ml_path, 
+            file_name=PATHS.training_pipeline_path
+        )
         _logger.info(
             f"Saving trained pca to {PATHS.pca_path}."
         )
-        with open(PATHS.pca_path, "wb") as outfile:
-            pickle.dump(trained_training_pipeline["pca"], outfile)
+        s3_save_pickle(
+            trained_training_pipeline["pca"], 
+            key=PATHS.s3_ml_path, 
+            file_name=PATHS.pca_path
+        )
         _logger.info(
             f"Saving trained model to {PATHS.model_path}."
         )
-        with open(PATHS.model_path, "wb") as outfile:
-            pickle.dump(trained_training_pipeline["classifier"], outfile)
+        s3_save_pickle(
+            trained_training_pipeline["classifier"], 
+            key=PATHS.s3_ml_path, 
+            file_name=PATHS.model_path
+        )
     return trained_training_pipeline

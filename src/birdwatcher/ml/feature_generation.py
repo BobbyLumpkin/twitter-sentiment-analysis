@@ -34,6 +34,7 @@ from birdwatcher.config import (
 )
 from birdwatcher.dataprep.prep import _load_df_if_not_provided
 from birdwatcher.ml.PCAPlotIt import PCAPlotIt
+from birdwatcher.s3_utils import s3_load_pickle, s3_save_pickle
 
 
 with open(PATHS.dc_run_date_info, "rb") as infile:
@@ -45,7 +46,16 @@ def get_tfidf_vectorizer(
     text_col_proc: Optional[str] = None,
     save: bool = False
 ):
-    if not os.path.exists(PATHS.tfidf_vectorizer_path):
+    try:
+        vectorizer = s3_load_pickle(
+            key=PATHS.s3_ml_path, 
+            file_name=PATHS.tfidf_vectorizer_path
+        )
+        _logger.info(
+            "Found vectorizer. Loading from "
+            f"{os.path.join(PATHS.s3_ml_path, PATHS.tfidf_vectorizer_path)}."
+        )
+    except:
         _logger.info(
             "Couldn't find vectorizer. "
             "Instantiating new TfidfVectorizer object with the "
@@ -69,14 +79,11 @@ def get_tfidf_vectorizer(
             _logger.info(
                 f"Saving tfidf vectorizer to {PATHS.tfidf_vectorizer_path}."
             )
-            with open(PATHS.tfidf_vectorizer_path, "wb") as outfile:
-                pickle.dump(vectorizer, outfile)
-    else:
-        _logger.info(
-            f"Found vectorizer. Loading from {PATHS.tfidf_vectorizer_path}."
-        )
-        with open(PATHS.tfidf_vectorizer_path, "rb") as infile:
-            vectorizer = pickle.load(infile)
+            s3_save_pickle(
+                vectorizer, 
+                key=PATHS.s3_ml_path, 
+                file_name=PATHS.tfidf_vectorizer_path
+            )
     return vectorizer
 
 

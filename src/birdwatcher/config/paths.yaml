@@ -111,15 +111,7 @@ s3_ml_path: &s3_ml_path
   !osjoin
     - *s3_bucket
     - "ml"
-training_pipeline_path: !osjoin
-  - *s3_ml_path
-  - "training_pipeline.pkl"
-tfidf_vectorizer_path: !osjoin
-  - *s3_ml_path
-  - "tfidf_vectorizer.pkl"
-pca_path: !osjoin
-  - *s3_ml_path
-  - "trained_pca.pkl"
-model_path: !osjoin
-  - *s3_ml_path
-  - "trained_model.pkl"
+training_pipeline_path: "training_pipeline.pkl"
+tfidf_vectorizer_path: "tfidf_vectorizer.pkl"
+pca_path: "trained_pca.pkl"
+model_path: "trained_model.pkl"
