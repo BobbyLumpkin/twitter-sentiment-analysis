@@ -139,7 +139,8 @@ def _load_df_if_not_provided(
 def _process_text_helper(
     df: pd.DataFrame,
     indices: list,
-    text_col: str
+    text_col: str,
+    restrict_to_english: bool = False
 ) -> pd.DataFrame:
     """
     Process text column. Helper function for `process_text_df`.
@@ -148,7 +149,8 @@ def _process_text_helper(
     text_col_proc = text_col + "_processed"
     df_tmp = df[df.index.isin(indices)].copy(deep=True)
     df_tmp["lang"] = df_tmp[text_col].apply(detect_wrapper).copy(deep=True)
-    df_tmp = df_tmp[df_tmp.lang == "en"]
+    if restrict_to_english:
+        df_tmp = df_tmp[df_tmp.lang == "en"]
 
     # Remove urls, punctuation and stop words
     df_tmp[text_col_proc] = df_tmp[text_col].apply(lambda x : _remove_and_tokenize(x))
@@ -168,7 +170,8 @@ def process_text_df(
     data_key: Optional[str] = None, 
     n_jobs: int = -1, 
     verbose: int = 10, 
-    end_date_name: str = run_info.end_date_name, 
+    end_date_name: str = run_info.end_date_name,
+    restrict_to_english: bool = False,
     save_path: Optional[str] = None
 ) -> pd.DataFrame:
     """
@@ -213,7 +216,8 @@ def process_text_df(
         delayed(_process_text_helper)(
             df=df,
             indices=indices,
-            text_col=text_col
+            text_col=text_col,
+            restrict_to_english=restrict_to_english
         ) for indices in indices_list
     )
     df = pd.concat(objs=df_list, ignore_index=True)

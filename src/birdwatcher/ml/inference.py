@@ -37,6 +37,7 @@ with open(PATHS.dc_run_date_info, "rb") as infile:
 def _generate_inference_dataprep_kwargs(
     data_key: str,
     end_date_name: str = run_info.end_date_name,
+    restrict_to_english: bool = False,
     save: bool = True
 ):
     """
@@ -45,6 +46,7 @@ def _generate_inference_dataprep_kwargs(
     config_dict = DATA_PREP_CONFIG.processing_info[data_key]
     kwargs = {
         "data_key": data_key,
+        "restrict_to_english": restrict_to_english,
         "text_col": config_dict["text_col"]
     }
     if save:
@@ -102,6 +104,7 @@ def _get_scores_save_path(
 def get_trained_inference_pipeline(
     data_key: str,
     end_date_name: str = run_info.end_date_name,
+    restrict_to_english: bool = False,
     save: bool = True,
     verbose: bool = True
 ):
@@ -115,6 +118,7 @@ def get_trained_inference_pipeline(
     INFERENCE_DATAPREP_KWARGS = _generate_inference_dataprep_kwargs(
         data_key=data_key,
         end_date_name=end_date_name,
+        restrict_to_english=restrict_to_english,
         save=save
     )
     INFERENCE_TFIDF_KWARGS = _generate_inference_tfidf_kwargs(
