@@ -33,7 +33,7 @@ APP_PATH = Path(os.path.join(
     Path(os.path.realpath(__file__)).parents[0],
     "app"
 ))
-IMAGES_PATH = APP_PATH / "images"
+IMAGES_PATH = APP_PATH / "pages/images"
 
 
 def _load_bool(value: str) -> bool:

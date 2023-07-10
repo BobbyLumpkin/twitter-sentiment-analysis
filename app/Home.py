@@ -43,7 +43,7 @@ visualizations featured here are based on simulated data.
 # Set the main page config.
 st.set_page_config(
     page_title="Let's go Birdwatching",
-    page_icon="./images/icon.png"
+    page_icon="./pages/images/icon.png"
 )
 
 # Write intro page markdown.
@@ -53,7 +53,7 @@ with col1:
     st.write(HOME_PAGE_MARKDOWN, unsafe_allow_html=True)
 
 with col2:
-    st.image(Image.open("./images/icon.png"))
+    st.image(Image.open("./pages/images/icon.png"))
 
 # Add sidebar success message.
 st.sidebar.success("Select a topic above.")

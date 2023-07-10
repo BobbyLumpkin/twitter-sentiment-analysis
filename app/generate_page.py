@@ -50,7 +50,7 @@ def generate_topic_page(topic: str) -> None:
     # Set the main page config.
     st.set_page_config(
         page_title="Let's go Birdwatching",
-        page_icon="../images/icon.png"
+        page_icon="../pages/images/icon.png"
     )
 
     # Create a title.
@@ -60,10 +60,10 @@ def generate_topic_page(topic: str) -> None:
     # Display the pie chart.
     intro_markdown = _generate_page_intro_markdown(topic=topic)
     st.write(intro_markdown)
-    pie_chart = Image.open(f"./images/{topic}/{topic}_pie_chart.png")
+    pie_chart = Image.open(f"./pages/images/{topic}/{topic}_pie_chart.png")
     st.image(pie_chart, caption=PIE_CHART_CAPTION.format(topic=TOPIC_TEXT))
     
     # Display the line graph.
-    line_graph = Image.open(f"./images/{topic}/{topic}_line_graph.png")
+    line_graph = Image.open(f"./pages/images/{topic}/{topic}_line_graph.png")
     st.image(line_graph, caption=LINE_GRAPH_CAPTION.format(topic=TOPIC_TEXT))
     return

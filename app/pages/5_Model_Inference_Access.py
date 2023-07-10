@@ -71,7 +71,7 @@ def perform_online_inference(text: str):
 if __name__ == "__main__":
     st.set_page_config(
         page_title="Let's go Birdwatching",
-        page_icon="../images/icon.png"
+        page_icon="./pages/images/icon.png"
     )
     
     # Create a title.
@@ -110,6 +110,6 @@ if __name__ == "__main__":
 
     with col2:
         st.image(
-            Image.open("./images/robot_reading_ai_generated.png"),
+            Image.open("./pages/images/robot_reading_ai_generated.png"),
             caption="Image created using hotpot ai art generator."
         )
