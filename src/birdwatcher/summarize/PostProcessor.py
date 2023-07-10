@@ -15,9 +15,9 @@ from birdwatcher.config import PATHS, SUMMARIZE_CONFIG
 from birdwatcher.ml.inference import _get_scores_save_path
 from birdwatcher.s3_utils import s3_save_pickle, s3_load_pickle
 from birdwatcher.summarize.post_processing_utils import (
-    _generate_history_line_graph,
     _generate_sentiment_distribution,
     _generate_sentiment_pie_chart,
+    _load_recent_postprocessors,
     SentimentDistribution,
     SentimentLineGraph,
     SentimentPieChart
@@ -116,6 +116,46 @@ class PostProcessor:
             )
         return
     
+    def _generate_history_line_graph(
+        self,
+        data_key: str,
+        params: dict
+    ) -> SentimentLineGraph:
+        """
+        Generate a historical line graph of positive sentiment.
+        """
+        post_processor_list = _load_recent_postprocessors(
+            max_return=params["max_records"]
+        )
+        post_processor_list.insert(0, self)
+        positive_list = [
+            (pp.distributions[data_key].num_positive / (
+                pp.distributions[data_key].num_negative +
+                pp.distributions[data_key].num_positive
+            ))
+            for pp in post_processor_list 
+        ]
+        positive_list.reverse()
+        date_list = [
+            pp.end_date_name for pp in post_processor_list
+        ]
+        date_list.reverse()
+        title = (
+            params["title"].format(data_key=data_key).replace("_", " ").title()
+        )
+
+        fig = plt.figure()
+        plt.plot(date_list, positive_list, marker=params["marker"])
+        plt.ylim(params["ylim"])
+        plt.xlabel(params["xlabel"])
+        plt.ylabel(params["ylabel"])
+        plt.title(title)
+        return SentimentLineGraph(
+            fig=fig,
+            positive_list=positive_list,
+            date_list=date_list
+        )
+    
     def _update_line_graph(
         self,
         data_key: str,
@@ -137,7 +177,7 @@ class PostProcessor:
             _logger.info(
                 f"Updating line graph for data_key: {data_key}."
             )
-        self.line_graphs[data_key] = _generate_history_line_graph(
+        self.line_graphs[data_key] = self._generate_history_line_graph(
             data_key=data_key,
             params=line_graph_params
         )

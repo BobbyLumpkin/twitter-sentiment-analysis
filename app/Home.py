@@ -33,6 +33,11 @@ sentiment classification scores on the "Model Inference Access" page!
 
 The source code for both the sentiment analysis pipeline and app
 front-end can be found in my GitHub: [twitter-sentiment-analysis](https://github.com/BobbyLumpkin/twitter-sentiment-analysis/tree/main)
+
+<hr>
+
+**<span style="color: red;"><u>NOTE:</u></span>** Due to the change in twitter's API access policies, the
+visualizations featured here are based on simulated data.
 """
 
 # Set the main page config.
@@ -45,7 +50,7 @@ st.set_page_config(
 col1, col2 = st.columns([7, 3])
 
 with col1:
-    st.write(HOME_PAGE_MARKDOWN)
+    st.write(HOME_PAGE_MARKDOWN, unsafe_allow_html=True)
 
 with col2:
     st.image(Image.open("./images/icon.png"))

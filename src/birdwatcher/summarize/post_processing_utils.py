@@ -125,7 +125,11 @@ def _load_recent_postprocessors(
         path=PATHS.post_processing_path,
         pattern="PostProcessor_",
         file_extensions=[".pkl"]
-    )["PostProcessor_"]
+    )
+    if post_processor_path_list:
+        post_processor_path_list = post_processor_path_list["PostProcessor_"]
+    else:
+        post_processor_path_list = []
     post_processor_path_list.sort(reverse=True)
     
     if max_return:
@@ -140,40 +144,3 @@ def _load_recent_postprocessors(
             for pp in post_processor_path_list
         ]
     return post_processor_list
-
-
-def _generate_history_line_graph(
-    data_key: str,
-    params: dict
-) -> SentimentLineGraph:
-    """
-    Generate a historical line graph of positive sentiment.
-    """
-    post_processor_list = _load_recent_postprocessors(
-        max_return=params["max_records"]
-    )
-    positive_list = [
-        (pp.distributions[data_key].num_positive / (
-            pp.distributions[data_key].num_negative +
-            pp.distributions[data_key].num_positive
-        ))
-        for pp in post_processor_list 
-    ]
-    date_list = [
-        pp.end_date_name for pp in post_processor_list
-    ]
-    title = (
-        params["title"].format(data_key=data_key).replace("_", " ").title()
-    )
-
-    fig = plt.figure()
-    plt.plot(date_list, positive_list, marker=params["marker"])
-    plt.ylim(params["ylim"])
-    plt.xlabel(params["xlabel"])
-    plt.ylabel(params["ylabel"])
-    plt.title(title)
-    return SentimentLineGraph(
-        fig=fig,
-        positive_list=positive_list,
-        date_list=date_list
-    )
